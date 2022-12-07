@@ -1,5 +1,12 @@
 package com.example.writtenexam;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * @projectName: written-exam
  * @package: com.example.writtenexam
@@ -91,5 +98,36 @@ public class Demo5 {
                 "      \"parent\": \"510001\"\n" +
                 "    }\n" +
                 "  ]";
+        //1.转为对象
+        List<Region> regions = JSONObject.parseArray(src, Region.class);
+        //存入map，并使用code倒序排序
+        Map<String,Region> map = new TreeMap<>((s1, s2)->s2.compareTo(s1));
+        for (Region region : regions) {
+            map.put(region.getCode(),region);
+        }
+        //遍历map
+        while(map.size()>1){
+            //取出一个code不为110的键值对
+            for (Map.Entry<String, Region> entry : map.entrySet()) {
+                if(!entry.getValue().getCode().equals("110")){
+                    //取出其父元素的code
+                    String key = entry.getValue().getParent();
+                    //取出父元素
+                    Region parent = map.get(key);
+                    //将当前元素赋给父元素作为子元素
+                    parent.getChildren().add(entry.getValue());
+                    //删除当前元素
+                    map.remove(entry.getKey());
+                    break;
+                }
+            }
+        }
+        //取出110顶级元素
+        Region area = map.get("110");
+        //转为json
+        String json = JSONObject.toJSONString(area);
+        System.out.println(json);
+        Region region = JSON.parseObject(json, Region.class);
+        System.out.println("region = " + region.toString());
     }
 }

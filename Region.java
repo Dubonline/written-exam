@@ -1,5 +1,7 @@
 package com.example.writtenexam;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,37 +14,18 @@ import java.util.Objects;
  * @version: 1.0
  */
 public class Region {
+    private String id;
     private String name;
+    private String code;
+    private String parent;
+    private List<Region> children = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "Region{" +
-                "name='" + name + '\'' +
-                ", code='" + code + '\'' +
-                ", parent='" + parent + '\'' +
-                '}';
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Region region = (Region) o;
-        return Objects.equals(name, region.name) && Objects.equals(code, region.code) && Objects.equals(parent, region.parent);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, code, parent);
-    }
-
-    public Region() {
-    }
-
-    public Region(String name, String code, String parent) {
-        this.name = name;
-        this.code = code;
-        this.parent = parent;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -69,6 +52,22 @@ public class Region {
         this.parent = parent;
     }
 
-    private String code;
-    private String parent;
+    @Override
+    public String toString() {
+        return "Region{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", parent='" + parent + '\'' +
+                ", children=" + children +
+                '}';
+    }
+
+    public List<Region> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Region> children) {
+        this.children = children;
+    }
 }
